@@ -1,0 +1,157 @@
+
+.popoverModal {
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    width: 25%; /* Full width */
+    height: 63%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+  }
+
+.active-block{
+    display: block !important;
+    }
+
+.instructor-link.active{
+
+    border-right: 5px solid rgb(47, 121, 241);
+
+}
+
+.instructor-table-for-adminDashboard {
+    display: none;
+}
+
+.instructor-table-for-adminDashboard.active {
+    display: block;
+}
+
+.instructor-link-for-adminDashboard.active{
+    border-bottom: 4px solid rgb(47, 121, 241);
+    display: block;
+}
+
+.base-page-drop-down {
+    z-index: 99999999;
+}
+
+
+
+.instructor-timetable{
+    visibility: hidden;
+}
+
+.equal-width-column, .instructor-timetable{
+    table-layout: fixed;
+}
+
+.calendar-date{
+    height: 100px;
+    background-color:#fdf0ca;
+    opacity: 0.7;
+    padding: 8px;
+    border-radius: 10%;
+    text-align: end;
+    overflow: hidden;
+}
+
+.calendar-date:hover{
+    background-color:aqua;
+}
+
+.calendar-avatar {
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    padding: 0px;
+    /* border: 1px;
+    border-color: blueviolet;
+    border: solid; */
+}
+
+.calendar-avatar-private-lesson {
+    border: 1px;
+    border-color: rgba(249, 205, 244, 0.943);
+    border: solid;
+}
+
+.calendar-avatar-group-class {
+    border: 1px;
+    border-color: rgb(75, 118, 245);
+    border: solid;
+} 
+
+
+
+.bookings-list{
+    text-align: left;
+}
+
+
+.custom-popover {
+    border-color: #663399;
+    background-color: white;
+    color: white;
+    padding:0px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hyperLinkStyle{
+    text-decoration: none; /* Remove underline */
+    color: inherit;
+}
+
+.above-div{
+    border:solid !important;
+    border: 1px;
+    font-size: 1rem;
+    border-color: #f4e910;
+    background-color: rgb(71, 126, 209);
+    color:white;
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    vertical-align:middle !important;
+    margin: 0px !important;
+}
+
+.instructor-link:hover{
+    border: solid;
+    border-color: #663399;
+    border-radius: 1px;
+}
+
+.calendarModal {
+    display: none;
+    background-color: #ffffff;
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    width: 25%; /* Full width */
+    /* height: 63%;  */
+    max-height: 63%;
+    overflow: auto; /* Enable scroll if needed */
+}
+
+.hand-cursor {
+    cursor: pointer;
+  }
+
+.timetableModal {
+    padding: 15px;
+    display: none;
+    background-color: #fefcfc;
+    position: fixed; /* Stay in place */
+    z-index: 99999; /* Sit on top */
+    width: 25%; /* Full width */
+    /* height: 63%;  */
+    max-height: 63%;
+    overflow: auto; /* Enable scroll if needed */
+}
+
+.text-bg-dark{
+    margin-right: 2px; 
+    margin-left: 2px;
+}
+

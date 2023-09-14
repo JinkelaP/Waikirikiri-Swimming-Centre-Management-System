@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Report{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid pt-3">
+  <div class="container">
+    <div>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.adminDashboard')}}">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Attendance Report</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="my-4">Attendance Report</h2>
+  <div id="main" class="container pt-1 bg-body-tertiary" style=" height: 400px;"></div>
+  <script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('main'));    
+
+    var monthlyAttendanceData = {{ monthlyAttendanceData | tojson | safe }};
+    
+    var monthlyAttendance = {
+      attendanceMonth: [],
+      monthlyAttendanceCount: [],
+      usingPoolCount: [],
+      individualClassCount: [],
+      aquaClassCount: []
+    };
+    monthlyAttendanceData.forEach(function (item) {
+      monthlyAttendance.attendanceMonth.push(item.attendanceMonth);
+      monthlyAttendance.monthlyAttendanceCount.push(item.monthlyAttendanceCount);
+      monthlyAttendance.usingPoolCount.push(item.usingPoolCount);
+      monthlyAttendance.individualClassCount.push(item.individualClassCount);
+      monthlyAttendance.aquaClassCount.push(item.aquaClassCount);
+    });
+    
+    var option = {};
+    option = {
+      title: {
+        text: 'Monthly Attendance'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Attendance', 'Using Pool', 'Individual class', 'Aqua Aerobics Class']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Attendance',
+          type: 'line',
+          data: monthlyAttendance.monthlyAttendanceCount
+        },
+        {
+          name: 'Using Pool',
+          type: 'bar',
+          barWidth: '12%', 
+          data: monthlyAttendance.usingPoolCount
+        },
+        {
+          name: 'Individual class',
+          type: 'bar',
+          barWidth: '12%', 
+          data: monthlyAttendance.individualClassCount
+        },
+        {
+          name: 'Aqua Aerobics Class',
+          type: 'bar',
+          barWidth: '12%', 
+          data: monthlyAttendance.aquaClassCount
+        }
+      ]
+
+    };
+    myChart.setOption(option);
+
+    </script>
+  <div class="mb-3" style="display: flex; align-items: center;">
+    <form method="POST">
+      
+      <label for="startDate"></label>
+      <input type="date" id="startDate" name="startDate">
+      
+      <label for="endDate">to</label>
+      <input type="date" id="endDate" name="endDate">
+      
+      <label for="selected_member">Select Member:</label>
+      <select id="selected_member" name="selected_member">
+        <option value="">All Members</option>
+        {% for member in member_list %}
+        <option value="{{ member.userID }}">{{ member.firstName }} {{ member.lastName }}</option>
+        {% endfor %}
+      </select>
+    
+
+      <label for="selected_attendanceType">Select AttendanceType:</label>
+      <select id="selected_attendanceType" name="selected_attendanceType">
+        <option value="">All AttendanceType</option>
+        <option value="1">Using Pool</option>
+        <option value="2">Individual Class</option>
+        <option value="3">Aqua Aerobics Class</option>
+        
+      </select>
+      
+      <input type="submit" value="Submit" >
+      
+    </form>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        {% if startDateStr and endDateStr %}
+        <th>Date Range</th>
+        {% endif %}
+        <th>Member Name</th>
+        <th>Attendance Type</th>
+        <th>Attendance Count</th> 
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in attendance_data %}
+      <tr>
+        {% if startDateStr and endDateStr %}
+        <td>{{startDateStr}} to {{endDateStr}} </td>
+        {% endif %}
+        <td>{{ record.firstName }} {{ record.lastName }}</td>
+        {% if record.attendanceType == 1 %}
+        <td>Using the pool</td>
+        {% elif record.attendanceType == 2 %}
+        <td>Individual swimming class</td>
+        {% else %}
+        <td>Aqua aerobics class</td>
+        {% endif %}
+        <td>{{ record.count }}</td>  
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

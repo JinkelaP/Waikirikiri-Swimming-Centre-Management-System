@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.instructorDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">History bookings</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="table-responsive mt-4">
+            <table class="table mt-2">
+                <thead>
+                    <tr>
+                        <th>Session Name</th><th>Session Date</th><th>Session Time</th><th>Member</th><th>Lesson Duration</th><th>Pool</th>  
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                   {% for booking in historyBookings %}
+                        <tr>
+                            <td>{{ booking['sessionName'] }}</td>
+                            <td>{{ booking['sessionTime'].date() }}</td>
+                            <td>{{ booking['sessionTime'].time() }}</a></td>
+                            <td>{{ booking['firstName']}} {{ booking['lastName'] }}</td>
+                            <td>{{ booking['lessonDuration'] }} minutes</td>
+                            <td>{{ booking['poolType']}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

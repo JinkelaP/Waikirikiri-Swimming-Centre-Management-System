@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <!-- side bar -->
+            <!-- <div class="flex-shrink-0 p-3 text-bg-dark d-none d-lg-block col-lg-2">
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-white text-decoration-none border-bottom">
+                <span class="fs-6 fw-semibold">Dashboard</span>
+                </a>
+                <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    Members
+                    </button>
+                    <div class="collapse show ms-4" id="home-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">All members</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Payments</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Subscriptions</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Attendance</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    Schedule
+                    </button>
+                    <div class="collapse show ms-4" id="dashboard-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Aqua aerobic classes</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Individual swimming lessons</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    Reports
+                    </button>
+                    <div class="collapse show ms-4" id="orders-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Financial reports</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Aqua aerobic classes reports</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    News/Updates
+                    </button>
+                    <div class="collapse show ms-4" id="orders-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">Draft</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white">All news/updates</a></li>
+                    </ul>
+                    </div>
+                </li>
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                        Calender
+                    </button>
+                </li>
+                </ul>
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none border-bottom">
+                    <span class="fs-6 fw-semibold text-white">Account</span>
+                </a>
+                <ul class="list-unstyled ps-0">
+                    <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                        Profile
+                    </button>
+                    </li>
+                    <li class="mb-1">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                        Logout
+                        </button>
+                    </li>
+                </ul>
+            </div> -->
+
+            <!-- <div class="col-lg-12"> -->
+                <!-- welcome -->
+                <!-- <div>
+                    <h1 class="text-end">Welcome!</h1>
+                </div>
+            <div class="col-lg-12 mt-3"> -->
+            <div class="card shadow border-light col-lg-12 mt-3 px-0">
+                <div class="card-header" style="background-color: transparent;">
+                    <h2 class="fs-6 fw-bold py-1 m-0">Highlights</h2>
+                </div>
+                <div class="row g-0 px-3">
+                    <div class="col-lg-3 col-6 d-flex justify-content-center">
+                        <div class="card-body">
+                            <p class="fw-light my-0">Total members</p>
+                            <h2 class="card-title fs-1 fw-bold my-0">{{ totalMember }}</h2>
+                            <p class="mt-0"></p>
+                            <br>
+                            <a href= "{{ url_for('adminDashboardFunc.memberList') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">View all members</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="card-body">
+                            <p class="fw-light my-0">Total revenue in {{month}}</p>
+                            <h2 class="card-title fs-1 fw-bold my-0">${{ monthlyPayment }}</h2>
+                            <p class="mt-0">{{paymentIncreasePercentage}}% increase</p>
+                            <a href="{{ url_for('adminDashboardFunc.paymentList') }}" type="button"
+                                class="btn btn-outline-success btn-sm rounded-pill">View all payments</a>                            
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="card-body">
+                            <p class="fw-light my-0">Total subscriptions</p>
+                            <h2 class="card-title fs-1 fw-bold my-0">{{ totalSubscription}}</h2>
+                            <p class="text-danger mt-0">{{ SubsIn1Month }} due in one month</p>
+                            <button type="button" class="btn btn-outline-success btn-sm rounded-pill" onclick="location.href='{{ url_for('someFunctions.viewAllSubscriptions') }}'">View all subscriptions</button>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="card-body">
+                            <p class="fw-light my-0">Total attendance in {{month}}</p>
+
+                            <h2 class="card-title fs-1 fw-bold my-0">{{attendanceCount}}</h2>
+                            <p class="mt-0">Increased by {{attendanceIncreasePercentage}}%</p>
+
+                            <a href="{{ url_for('adminDashboardFunc.attendanceReport') }}" type="button"
+                                class="btn btn-outline-success btn-sm rounded-pill">View all attendance</a>
+                            <!-- <button type="button" class="btn btn-outline-success btn-sm rounded-pill">View all attendance</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+
+        <div class="row mt-4 d-flex align-items-between">
+            <div class="col-lg-9 px-0 d-flex align-items-end">
+                <div class="card shadow border-light mb-4 ms-lg-12">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                        <h2 class="fs-6 m-0 fw-bold">Schedule of Aqua Aerobics classes</h2>
+                        <a href="{{url_for('adminDashboardFunc.aqua')}}" type="button" class="btn btn-outline-success btn-sm rounded-pill" >Edit schedule</a>
+                    </div>
+
+                    <div class="container">
+                        <!-- table of group class schedule -->
+                        <div class="card-body text-center">
+                            <table class="table equal-width-column">
+                                <thead>
+                                  <tr class="text-bg-warning sticky-sm-top">
+                                        <th></th>
+                                        {% set dates = [] %}
+                                        {% for date in classes.values() %}
+                                            {% set _ = dates.append(date) %}
+                                        {% endfor %}
+                                        {% for date in dates[0] %}
+                                            {% set day_of_week = date.strftime('%A') %}
+                                            {% set formatted_date = date.strftime('%d/%m/%Y') %}
+                                                <!-- table header all the dates -->
+                                                <th class="text-center date-cell">
+                                                    {% if loop.index == 1 %}
+                                                        <span>TODAY</span>
+                                                    {% else %}
+                                                        <div>{{ day_of_week[0]|upper }}</div>
+                                                    {% endif %} 
+                                                </th>  
+                                        {% endfor %}
+                                  </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    {% for timeSlot, dates in classes.items() %}
+                
+                                    <tr>
+                                        <td scope="row">{{ timeSlot }}</td>
+                                        {% for date, classList in dates.items() %}
+                                            <td class="px-0 align-middle">
+                                                {% for class in classList %}
+                                                    <div class="bg-info-subtle mx-1 ">
+                                                        <p class="my-0 display-6 fs-6 py-1">{{ class.sessionName }}</p>
+                                                    </div>
+                                                {% endfor %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>
+
+                        <!-- <div class="row">
+                            {% for class in aquaList|sort(attribute='sessionTime') if class['bookingActive'] == 1 %}
+
+                                <div class="col-md-4 mb-4"> 
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Date: {{ class['sessionTime'] }}
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a style="color: rgb(6, 133, 175);" >Class: {{ class['sessionName'] }}</a></h5>
+                                            <p class="card-text">
+                                                Instructor: {{ class['instructorName'] }}<br>
+                                                Schedule ID: {{ class['scheduleID'] }}<br>
+                                                Duration: {{ class['lessonDuration'] }} min<br>
+                                                Max Capacity: {{ class['maxParticipants'] }}<br>
+                                                Pool: {{ class['poolID'] }}<br>
+                                                Status: {% if class['bookingActive'] == 1 %} Active {% else %} Deleted {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>   -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 px-0">
+                <div class="row ms-3 d-flex">
+                    <div class="">
+                        <div class="card shadow border-light mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                                <h2 class="fs-6 m-0 fw-bold">Most popular Aqua Aerobics classes</h2>
+                            </div>
+                            <div class="card-body">
+                                Check the full report of our most popular aqua aerobic class here!
+                                <hr />
+                                <div class="d-flex justify-content-end">
+                                <a href="{{ url_for('someFunctions.fullReport') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">View full report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ms-3 d-flex">
+                    <div class="">
+                        <div class="card shadow border-light mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                                <h2 class="fs-6 m-0 fw-bold">Check in</h2>
+                            </div>
+                            <div class="card-body">
+                                Check in members entering the swimming centre!
+                                <hr />
+                                <a href="{{ url_for('adminDashboardFunc.checkin') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">Check in</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+                <div class="row ms-3 d-flex">
+                    <div class="">
+                        <div class="card shadow border-light mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                                <h2 class="fs-6 m-0 fw-bold">Financial report</h2>
+                            </div>
+                            <div class="card-body">
+                                Subscription: {{ subPayment }}
+                                Swimming lessons: {{individualPayment}}
+                                <hr />
+                                <div class="d-flex justify-content-end">
+                                <a href="{{ url_for('adminDashboardFunc.financialReport') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">View report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ms-3 d-flex">
+                    <div class="">
+                        <div class="card shadow border-light mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                                <h2 class="fs-6 m-0 fw-bold">News/Updates</h2>
+                            </div>
+                            <div class="card-body">
+                                <a href="{{url_for('someFunctions.writeNews') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">Write news</a>
+                                <br>
+                                <br>
+                                <div>
+                                    <a href="{{ url_for('someFunctions.displayNews') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">View all news</a>
+                                </div>
+                            </div>
+                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- table of instructor's schedules -->
+            <div class="card shadow border-light ms-lg-12 click-timetable-modal-disappear timetable-static">
+                {% if session['role'] == 1 %}
+                    <script>
+                        var userRole = 1;
+                    </script>
+                {% endif %}
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                    <h2 class="fs-6 my-1 fw-bold">Schedule of individual swimming lessons</h2>
+                    <a href="{{ url_for('adminDashboardFunc.instructorList') }}" type="button" class="btn btn-outline-success btn-sm rounded-pill">View all instructors</a>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <ul class="nav mb-3">
+                            {% for instructorID in instructorDict.keys() %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex flex-column align-items-center justify-content-center pt-0 instructor-link-for-adminDashboard " aria-current="page" href="#{{instructorID}}">
+                                    <img src="{{ url_for('static', filename='uploadAvatar/' + instructorID|string + '.jpg') }}" alt="mdo" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="rounded-circle" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/avatar.png')}}';">
+                                    <p class="m-0 p-0"><small>{{instructorDict[instructorID][1]['firstName']}} {{instructorDict[instructorID][1]['firstName'][0]}}</small></p>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                    {% for instructorID, eachInstructorAvailability in instructorAvailability.items()%}
+                        <table class="table table-responsive table-sm equal-width-column table-borderless nav-table instructor-table-for-adminDashboard" id = {{instructorID}}>   
+                            <thead>
+                                <tr class="sticky-sm-top bg-warning col-12 ">
+                                    <th></th>
+                                    {% set dates = [] %}
+                                    {% for date in eachInstructorAvailability.values() %}
+                                        {% set _ = dates.append(date) %}
+                                    {% endfor %}
+                                    {% for date in dates[0] %}
+                                    {% set day_of_week = date.strftime('%A') %}
+                                        <!-- table header all the dates -->
+                                        <th class="text-center date-cell py-2 {% if loop.index == 1 %} align-middle {% endif %}">
+                                            {% if loop.index == 1 %}
+                                                <span class="">TODAY</span>
+                                            {% else %}
+                                                <div >{{ day_of_week[0]|upper }}</div>
+                                            {% endif %}   
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody class="text-center data-table">
+                                <script>
+                                    // Embed the bookings data as a JavaScript variable
+                                    var bookingsData = {{ instructorDict[instructorID][0] | tojson | safe }};
+                                </script>
+                                <!-- loop throught both keys and values in dictionary -->
+                                {% for timeSlotID, eachSlotAvailability in eachInstructorAvailability.items() %}
+                                    <tr class="data-row" {% if timeSlotID % 4 == 1 %} style="border-top: solid 1px rgb(218, 218, 218);" {% endif %}>
+                                        <!-- {% if timeSlotID % 4 == 1 %}
+                                            <th scope="row" class="p-0 change-time-format" id="timeSlot_{{ timeSlotID }}"><div></div></th>
+                                        {% else %}
+                                            <th id="timeSlot_{{ timeSlotID }}"></th>
+                                        {% endif %} -->
+                                        <th class="p-0"><div id="timeSlot_{{ timeSlots[timeSlotID][0] }}" style="min-height:12px;"></div></th>
+                                        
+                                        <!-- loop throught both keys and values in dictionary -->
+                                        {% for date, timeAvailability in eachSlotAvailability.items() %}
+                                            {% if timeAvailability == True %}
+                                                <td class="p-0 data-cell">
+                                                    <!-- clickable table cells -->
+                                                    <div class="popover pe-2 pt-1 border-0 bg-transparent">
+                                                        <!-- <div class="change-color rounded" style="min-height:10px;">
+                                                        </div> -->
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td class="p-0 bg-body-secondary data-cell">
+                                                    <div style="min-height:12px;" id="{{ date }}/{{ timeSlots[timeSlotID][0] }}"></div>
+                                                </td>
+                                            {% endif %}
+                                            
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}     

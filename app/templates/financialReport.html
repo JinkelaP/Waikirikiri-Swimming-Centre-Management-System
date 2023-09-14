@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Financial Report{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-3">
+  <div class="container">
+    <div>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.adminDashboard')}}">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Financial Report</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="my-4">Financial Report</h2>
+  <label>
+    <input type="radio" name="dataSwitch" value="monthly" checked> Monthly
+  </label>
+  <label>
+    <input type="radio" name="dataSwitch" value="yearly"> Yearly
+  </label>
+  <div id="main" class="container pt-1 bg-body-tertiary" style=" height: 400px;"></div>
+  <script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('main'));
+    var radioButtons = document.getElementsByName('dataSwitch');
+
+    var monthlyPayments = {{ monthlyPayments | tojson | safe }};
+    var yearlyPayments = {{ yearlyPayments | tojson | safe }};
+    var monthlyPaymentsData = {
+      paymentMonth: [],
+      monthlyPayment: [],
+      subscriptionsMonthlyPayment: [],
+      classMonthlyPayment: []
+    };
+    monthlyPayments.forEach(function (item) {
+      monthlyPaymentsData.paymentMonth.push(item.paymentMonth);
+      monthlyPaymentsData.monthlyPayment.push(item.monthlyPayment);
+      monthlyPaymentsData.subscriptionsMonthlyPayment.push(item.subscriptionsMonthlyPayment);
+      monthlyPaymentsData.classMonthlyPayment.push(item.classMonthlyPayment);
+    });
+    var yearlyPaymentsData = {
+      paymentYear: [],
+      yearlyPayment: [],
+      subscriptionsYearlyPayment: [],
+      classYearlyPayment: []
+    };
+    yearlyPayments.forEach(function (item) {
+      yearlyPaymentsData.paymentYear.push(item.paymentYear);
+      yearlyPaymentsData.yearlyPayment.push(item.yearlyPayment);
+      yearlyPaymentsData.subscriptionsYearlyPayment.push(item.subscriptionsYearlyPayment);
+      yearlyPaymentsData.classYearlyPayment.push(item.classYearlyPayment);
+    });
+
+    var initialOptions = {};
+    initialOptions = {
+      title: {
+        text: 'Monthly Revenue'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Groose Revenue', 'Subscription Payment', 'Individual class Payment']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Groose Revenue',
+          type: 'line',
+          barWidth: '12%',
+          data: monthlyPaymentsData.monthlyPayment
+        },
+        {
+          name: 'Subscription Payment',
+          type: 'bar',
+          barWidth: '12%',
+          data: monthlyPaymentsData.subscriptionsMonthlyPayment
+        },
+        {
+          name: 'Individual class Payment',
+          type: 'bar',
+          barWidth: '12%',
+          data: monthlyPaymentsData.classMonthlyPayment
+        }
+      ]
+
+    };
+    myChart.setOption(initialOptions);
+    
+    for (const radioButton of radioButtons) {
+      radioButton.addEventListener('change', function () {
+        const selectedValue = document.querySelector('input[name="dataSwitch"]:checked').value;
+        var updatedOptions = {}; // Initialize an empty options object
+
+        if (selectedValue === 'monthly') {
+          updatedOptions = {
+            title: {
+              text: 'Monthly Revenue'
+            },
+            tooltip: {
+              trigger: 'axis'
+            },
+            legend: {
+              data: ['Groose Revenue', 'Subscription Payment', 'Individual class Payment']
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                name: 'Groose Revenue',
+                type: 'line',
+
+                data: monthlyPaymentsData.monthlyPayment
+              },
+              {
+                name: 'Subscription Payment',
+                type: 'bar',
+                barWidth: '12%',
+                data: monthlyPaymentsData.subscriptionsMonthlyPayment
+              },
+              {
+                name: 'Individual class Payment',
+                type: 'bar',
+                barWidth: '12%',
+                data: monthlyPaymentsData.classMonthlyPayment
+              }
+            ]
+
+          };
+        } else if (selectedValue === 'yearly') {
+          updatedOptions = {
+            title: {
+              text: 'Yearly Revenue'
+            },
+            tooltip: {
+              trigger: 'axis'
+            },
+            legend: {
+              data: ['Groose Revenue', 'Subscription Payment', 'Individual class Payment']
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: yearlyPaymentsData.paymentYear
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                name: 'Groose Revenue',
+                type: 'line',
+
+                data: yearlyPaymentsData.yearlyPayment
+              },
+              {
+                name: 'Subscription Payment',
+                type: 'bar',
+                barWidth: '5%',
+                data: yearlyPaymentsData.subscriptionsYearlyPayment
+              },
+              {
+                name: 'Individual class Payment',
+                type: 'bar',
+                barWidth: '5%',
+                data: yearlyPaymentsData.classYearlyPayment
+              }
+            ]
+
+          };
+        }
+        myChart.setOption(updatedOptions);
+      });
+    }
+
+  </script>
+  <div class="mt-3">
+    <!-- <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Monthly Total Revenue</th>
+          <th>Subscriptions Payment</th>
+          <th>Lessons Payment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for monthlyPayment in monthlyPayments %}
+        <tr>
+          <td>{{monthlyPayment.paymentYear}}-{{monthlyPayment.paymentMonth}}</td>
+          <td>{{monthlyPayment.monthlyPayment}}</td>
+          <td>{{monthlyPayment.subscriptionsMonthlyPayment}}</td>
+          <td>{{monthlyPayment.classMonthlyPayment}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Yearly Total Revenue</th>
+          <th>Subscriptions Payment</th>
+          <th>Lessons Payment</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for yearlyPayment in yearlyPayments %}
+          <tr>
+            <td>{{yearlyPayment.paymentYear}}</td>
+            <td>{{yearlyPayment.yearlyPayment}}</td>
+            <td>{{yearlyPayment.subscriptionsYearlyPayment}}</td>
+            <td>{{yearlyPayment.classYearlyPayment}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table> -->
+    <form action="{{ url_for('adminDashboardFunc.financialReport') }}" method="POST">
+      <label for="startDate">Choose start date</label>
+      <input type="date" id="startDate" name="startDate">
+    
+      <label for="endDate">Choose end date</label>
+      <input type="date" id="endDate" name="endDate">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Date Range</th>        
+        <th>Subscriptions Payment</th>
+        <th>Lessons Payment</th>
+        <th>Total amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <!-- <td>{{start_date}} to {{end_date}}</td>         -->
+        <td>{% if start_date and end_date%} {{start_date}} to {{end_date}} {% else %} {% endif %}</td>
+        <td>{{selectAmount.subscriptionsPayment}}</td>
+        <td>{{selectAmount.classPayment}}</td>
+        <td>{{selectAmount.totalPayment}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

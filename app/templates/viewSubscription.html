@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscription{% endblock %}
+
+{% block content %}
+<div class="container mx-auto my-5">
+    <!-- Breadcrumbs -->
+    <div class="mb-4">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Subscription</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="d-flex flex-column align-items-center">
+        <h2 class="mb-4">Your Subscription</h2>
+        
+        {% if subscription %}
+            <div class="d-flex justify-content-between w-25 mb-3">
+                <strong>Start Date:</strong>
+                <span>{{ subscription.startDate }}</span>
+            </div>
+            <div class="d-flex justify-content-between w-25 mb-3">
+                <strong>End Date:</strong>
+                <span>{{ subscription.endDate }}</span>
+            </div>
+            <a href="{{ url_for('reg.extendSubscription') }}" class="btn btn-primary">Extend Subscription</a>
+        {% else %}
+            <p>{{ msg }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

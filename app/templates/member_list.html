@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.adminDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Members</li>
+                </ol>
+            </nav>
+        </div>
+
+       
+        <!-- go back to dashboard icon -->
+        <!-- <div>
+            <a href="{{ url_for('adminDashboardFunc.adminDashboard')}}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="custom-back" width="30" height="30" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div> -->
+
+         <!-- add a member -->  
+        <div class="d-flex justify-content-end align-items-center">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMember">
+                <div class="d-flex justify-content-between align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-plus mx-2" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    <span class="d-none d-lg-block">Add a member</span>
+                </div>
+            </button>
+        
+            <div class="modal fade" id="addMember" tabindex="-1" aria-labelledby="addMember" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Add a member</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('adminDashboardFunc.addUser')}}" method = "POST" class="needs-validation form-feedback" id="add-user" novalidate>
+                                <div class="row g-3">
+                                    <input type="hidden" name="userType" value="3">
+                                    
+                                    <div class="col-sm-6">
+                                        <label for="userName" class="form-label">Username</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                            <input type="text" class="form-control" id="userName" name="userName" aria-describedby="inputGroupPrepend" required>
+                                            <div class="invalid-feedback username-empty-feedback">
+                                                Username is required.
+                                            </div>
+                                            <div class="invalid-feedback username-invalid-format-feedback">
+                                                Username must contain only letters and numbers.
+                                            </div>
+                                            <div class="valid-feedback username-valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="title" class="form-label">Title</label>
+                                        <select class="form-select" name="title" id="title" aria-label="selectTitle">
+                                            <option selected>Title</option>
+                                            <option value="Mr">Mr</option>
+                                            <option value="Mrs">Mrs</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Ms">Ms</option>
+                                            <option value="Dr">Dr</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" name="firstName" class="form-control" id="firstName">
+                                    </div>
+                                
+                                    <div class="col-sm-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" name="lastName" class="form-control" id="lastName">
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                        <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth">
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="position" class="form-label">Occupation</label>
+                                        <input type="text" name="position" class="form-control" id="position">
+                                    </div>
+                                
+                                    <div class="col-sm-6">
+                                        <label for="phoneNumber" class="form-label">Phone number</label>
+                                        <input type="text" name="phoneNumber" class="form-control" id="phoneNumber">
+                                    </div>
+                                
+                                    <div class="col-sm-10">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="text" name="email" class="form-control" id="email" required>
+                                        <div class="invalid-feedback email-empty-feedback">
+                                            Email addrss is required.
+                                        </div>
+                                        <div class="invalid-feedback email-invalid-format-feedback">
+                                            Invalid email address.
+                                        </div>
+                                        <div class="valid-feedback email-valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-sm-10">
+                                        <label for="physicalAddress" class="form-label">Address</label>
+                                        <input type="text" name="physicalAddress" class="form-control" id="physicalAddress">
+                                    </div>
+
+                                    <div class="col-sm-10">
+                                        <label for="userPassword" class="form-label">Password</label>
+                                        <input type="password" name="userPassword" class="form-control hehe" id="userPassword" required>
+                                        <div class="invalid-feedback password-empty-feedback">
+                                            Password is required.
+                                        </div>
+                                        <div class="invalid-feedback password-invalid-format-feedback">
+                                            Password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number.
+                                        </div>
+                                        <div class="valid-feedback password-valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-10 mb-4">
+                                        <label for="healthInfo" class="form-label">Health Information</label>
+                                        <textarea type="text" name="healthInfo" class="form-control" id="healthInfo" rows="3"></textarea>
+                                    </div>
+
+                                    
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="submitButton">Add member</button>
+                            
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- finish adding customer -->
+     
+
+        <div class="table-responsive mt-4">
+            <table class="table mt-2">
+                <thead>
+                    <tr>
+                        <th>Title</th><th>Username</th><th>Member Name</th><th>DOB</th><th>Email</th><th>Phone Number</th><th>Address</th><th>Occupation</th><th>Health Information</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for customer in customerList %}
+                        <tr>
+                            <td class="text-center">{{customer['title']}}</td>
+                            <td>{{ customer['userName']}}</td>
+                            <td><a href="{{url_for('adminDashboardFunc.checkProfile',userId=customer['userID'])}}">{{customer['firstName']}} {{customer['lastName']}}</a></td>
+                            <td>{{customer['dateOfBirth']}}</td>
+                            <td>{{customer['email']}}</td>
+                            <td>{{customer['phoneNumber']}}</td>
+                            <td>{{customer['physicalAddress']}}</td>
+                            <td>{{customer['position']}}</td>
+                            <td>{{customer['healthInfo']}}</td>
+
+        
+                            <td>
+                                <!-- Edit member -->
+                                <button type="button" class="btn text-primary px-2 mx-0" data-bs-toggle="modal" data-bs-target="#edit_{{customer['userID']}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                </button>
+
+                                <div class="modal fade" id="edit_{{customer['userID']}}" tabindex="-1" aria-labelledby="edit_customer" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="edit_customer">Edit member information</h2>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <form action="{{ url_for('adminDashboardFunc.updateUser')}}" method = "POST" class="needs-validation edit-user form-feedback" id="edit_{{customer['UserID']}}" novalidate>
+                                                    <div class="row g-3">
+                                                        <input type="hidden" name="userId" value="{{customer['userID']}}" readonly>
+
+                                                        <div class="col-sm-6">
+                                                            <label for="userName" class="form-label">Username</label>
+                                                            <div class="input-group has-validation">
+                                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                                                <input type="text" class="form-control hehe" id="userName" name="userName" value="{{customer['userName']}}" aria-describedby="inputGroupPrepend" required>
+                                                                <div class="invalid-feedback username-empty-feedback">
+                                                                    Username is required.
+                                                                </div>
+                                                                <div class="invalid-feedback username-invalid-format-feedback">
+                                                                    Username must contain only letters and numbers.
+                                                                </div>
+                                                                <div class="valid-feedback username-valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="title" class="form-label">Title</label>
+                                                            <select class="form-select" name = "title" value="{{customer['title']}}" aria-label="selectTitle">
+                                                                <option value="Mr" {% if customer['title'] == 'Mr' %} selected {% endif %}>Mr</option>
+                                                                <option value="Mrs" {% if customer['title'] == 'Mrs' %} selected {% endif %}>Mrs</option>
+                                                                <option value="Miss" {% if customer['title'] == 'Miss' %} selected {% endif %}>Miss</option>
+                                                                <option value="Ms" {% if customer['title'] == 'Ms' %} selected {% endif %}>Ms</option>
+                                                                <option value="Dr" {% if customer['title'] == 'Dr' %} selected {% endif %}>Dr</option>
+                                                            </select>
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-6">
+                                                            <label for="firstName" class="form-label">First Name</label>
+                                                            <input type="text" name="firstName" class="form-control" value="{{customer['firstName']}}" id="firstName">
+                                                        </div>
+                                                    
+                                                        <div class="col-sm-6">
+                                                            <label for="lastName" class="form-label">Last Name</label>
+                                                            <input type="text" name="lastName" class="form-control" value="{{customer['lastName']}}" id="lastName">
+                                                        </div>
+                        
+                                                        <div class="col-sm-6">
+                                                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                                            <input type="date" name="dateOfBirth" class="form-control" value="{{customer['dateOfBirth']}}" id="dateOfBirth">
+                                                        </div>
+                        
+                                                        <div class="col-sm-6">
+                                                            <label for="position" class="form-label">Occupation</label>
+                                                            <input type="text" name="position" class="form-control" value="{{customer['position']}}" id="position">
+                                                        </div>
+                                                    
+                                                        <div class="col-sm-6">
+                                                            <label for="phoneNumber" class="form-label">Phone number</label>
+                                                            <input type="text" name="phoneNumber" class="form-control" value="{{customer['phoneNumber']}}" id="phoneNumber">
+                                                        </div>
+                                                    
+                                                        <div class="col-sm-10">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="text" name="email" class="form-control hehe" id="email" value="{{customer['email']}}" required>
+                                                            <div class="invalid-feedback email-empty-feedback">
+                                                                Email addrss is required.
+                                                            </div>
+                                                            <div class="invalid-feedback email-invalid-format-feedback">
+                                                                Invalid email address.
+                                                            </div>
+                                                            <div class="valid-feedback email-valid-feedback">
+                                                                Looks good!
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="col-sm-10">
+                                                            <label for="physicalAddress" class="form-label">Address</label>
+                                                            <input type="text" name="physicalAddress" class="form-control" value="{{customer['physicalAddress']}}" id="physicalAddress">
+                                                        </div>
+
+                                                        <div class="col-sm-10">
+                                                            <label for="userPassword" class="form-label">Password</label>
+                                                            <input type="text" name="userPassword" class="form-control" id="userPassword" value="********" required>
+                                                            <div class="invalid-feedback password-empty-feedback">
+                                                                Password is required.
+                                                            </div>
+                                                            <div class="invalid-feedback password-invalid-format-feedback">
+                                                                Password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number.
+                                                            </div>
+                                                            <div class="valid-feedback password-valid-feedback">
+                                                                Looks good!
+                                                            </div>
+                                                        </div>
+                        
+                                                        <div class="col-sm-10 mb-4">
+                                                            <label for="healthInfo" class="form-label">Health Information</label>
+                                                            <textarea type="text" name="healthInfo" class="form-control" id="healthInfo" rows="3">{{customer['healthInfo']}}</textarea>
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        
+                                                        <button type="submit" class="btn btn-primary submitButton input-class " id="submitButton_{{customer['UserID']}}">Save changes</button>
+                                                
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- finish editing customer -->
+
+                                <!-- delete customer -->
+                                <button type="button" class="btn text-danger px-2 mx-0" data-bs-toggle="modal" data-bs-target="#delete_{{customer['userID']}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                    </svg>
+                                </button>
+                            
+                                <div class="modal fade" id="delete_{{customer['userID']}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edit_customer" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="delete_customer">Delete customer</h2>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete the member '{{customer['firstName']}} {{customer['lastName']}}'?
+                                                </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="{{ url_for('adminDashboardFunc.deleteUser', userId=customer['userID']) }}">
+                                                    <button type="button" class="btn btn-danger">Delete</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- finish deleting costomer -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>  
+    </div>
+</div>
+
+{% endblock %}

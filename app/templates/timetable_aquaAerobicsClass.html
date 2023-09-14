@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}Aqua Aerobics{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.memberDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Aqua Aerobics Class</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row pt-3">
+
+            <div class="my-4">
+                <h1 class="display-5 lead text-center">Aqua Aerobics Class Timetable</h1>
+            </div>
+            <table class="table equal-width-column mt-3">
+                <thead>
+                  <!-- <tr class="text-center">
+                    <th scope="col">
+                        <button class="btn btn-link left-scroll disabled">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                        </button>
+                    </th>
+                    <div class="date">
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_1 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_2 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_3 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_4 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_5 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_6 }}"></th>
+                    <th scope="col"><div class="fw-bold"></div><div class="fw-light"></div><input type="hidden" id="targetDateInput" value="{{ target_date_7 }}"></th>
+
+                    </div>
+                    <th scope="col">
+                        <button class="btn btn-link right-scroll">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                            </svg>
+                        </button>
+                    </th>
+                  </tr> -->
+                  <tr class="sticky-sm-top text-bg-secondary">
+                        <th></th>
+                        {% set dates = [] %}
+                        {% for date in classes.values() %}
+                            {% set _ = dates.append(date) %}
+                        {% endfor %}
+                        {% for date in dates[0] %}
+                            {% set day_of_week = date.strftime('%A') %}
+                            {% set formatted_date = date.strftime('%d/%m/%Y') %}
+                                <!-- table header all the dates -->
+                                <th class="text-center date-cell py-3 {% if loop.index == 1 %} bg-dark align-middle {% endif %}">
+                                    {% if loop.index == 1 %}
+                                        <span class="fs-5 lh-1">TODAY</span>
+                                    {% else %}
+                                        <div>{{ day_of_week|upper }}</div>
+                                        <div class="fw-light lh-1"><small>{{ formatted_date }}</small></div>
+                                    {% endif %} 
+                                </th>  
+                        {% endfor %}
+
+
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for timeSlot, dates in classes.items() %}
+
+                    <tr>
+                        <th scope="row" class="py-2"><div class="text-bg-warning py-1">{{ timeSlot }}</div></th>
+                        {% for date, classList in dates.items() %}
+                            <td class="px-0 pt-2 pb-1">
+                                {% for class in classList %}
+                                    <div class="card ms-1 mb-1">
+                                        <div class="card-header py-1 bg-info">
+                                        </div>
+                                        <div class="card-body pt-1 px-0 pb-0 d-flex flex-column justify-content-center align-items-center">
+                                            <p class="fs-6 fw-bolder mb-0 lh-sm">{{ class.sessionName|upper }}</p>
+                                            <p class="fs-6 fw-light mb-0 lh-base"><small>{{ class.sessionTime.strftime('%I:%M %p') }} - {{ class.endTime.strftime('%I:%M %p') }}</small></p>
+                                            <p class="fs-6 fw-light mb-0 lh-base"><small>{{ class.firstName }} {{ class.lastName }}</small></p>
+                                            <p class="fs-6 fw-light mb-0 lh-base">
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                                                    </svg>
+                                                </span>
+                                                <small>{{ class.poolType }}</small></p>
+                                            <P class="fs-6 fw-light mb-1">
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                    </svg>
+                                                </span>
+                                                <small>{{ class.maxParticipants - class.bookingCount }} spaces</small></P>
+                                            {% if class.classActive == 0 %}
+                                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill mt-1" style="font-size:0.75rem; padding: 0.25rem 0.5rem;" disabled>
+                                                    Unavailable
+                                                </button> 
+                                            {% elif class.bookingCount >= class.maxParticipants %}
+                                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill mt-1" style="font-size:0.75rem; padding: 0.25rem 0.5rem;" disabled>
+                                                    Full
+                                                </button>   
+                                            {% elif class.bookingID and class.bookingActive == 1%}
+                                                <button type="button" class="btn btn-outline-danger btn-sm rounded-pill mt-1" style="font-size:0.75rem; padding: 0.25rem 0.5rem;" data-bs-toggle="modal" data-bs-target="#{{ class['bookingID']}}">
+                                                    <span><small>Cancel class</small></span>
+                                                </button>
+                                                
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="{{ class['bookingID']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form id="backendForm_{{class['scheduleID']}}" action="{{ url_for('memberDashboardFunc.cancelBookings', bookingID=class['bookingID']) }}" class="d-none" method="POST">
+                                                            <!-- Include hidden input fields to pass data to the backend -->
+                                                            <input type="hidden" name="callingPage" value="memberDashboardFunc.aquaAerobicsClassTimetable">
+                                    
+                                                        </form>
+                                                        <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel booking</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        Confirm to cancel the {{class.sessionName}} on {{ class.sessionTime }} ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" form="backendForm_{{class['scheduleID']}}" href="{{url_for('memberDashboardFunc.cancelBookings', bookingID = class['bookingID']) }}" class="btn btn-danger">Cancel booking</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-outline-info btn-sm group-class-booking-button rounded-pill mt-1" id = "{{class['scheduleID']}}_{{class.sessionTime}}" style="font-size:0.75rem; padding: 0.25rem 0.5rem;" data-bs-toggle="modal" data-bs-target="#{{class.scheduleID}}">
+                                                    Book class
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="{{class.scheduleID}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Book Aqua Aerobics Class</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        Confirm to book the class {{ class.sessionName }} on {{ class.sessionTime }} ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a type="button" href="{{url_for('memberDashboardFunc.bookClass',scheduleId = class.scheduleID) }}" class="btn btn-primary">Book</a>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="progress mt-2" role="progressbar" aria-label="Info example" aria-valuenow="{{ class.bookingCount}}" aria-valuemin="0" aria-valuemax="{{class.maxParticipants}}">
+                                            <div class="progress-bar bg-info" style="width:{{(class.bookingCount / class.maxParticipants) * 100}}%"></div><span class="text-center">{{ class.bookingCount }}/{{ class.maxParticipants }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

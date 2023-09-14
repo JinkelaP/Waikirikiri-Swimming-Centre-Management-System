@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Aqua Aerobics{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary click-calendar-modal-disappear">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                {% if session['role'] == 3 %}
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.memberDashboard')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.memberDashboard')}}">Dashboard</a></li>
+                {% elif session['role'] == 2 %}
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.instructorDashboard')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.instructorDashboard')}}">Dashboard</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active" aria-current="page">My calendar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row pt-3">
+            <div class="col-lg-10 col-12 mx-auto">
+                <div class="d-flex justify-content-around align-items-center mb-3">
+                    <svg id="prevMonth" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                      </svg>
+                    <span id="monthYear" class="fs-4 fw-bold"></span>
+                    <svg id="nextMonth" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                      </svg>
+                </div>
+                <table class="table table-responsive table-borderless equal-width-column calender-static-table">   
+                    <thead>
+                        <tr class="text-center">
+                        <th class="calendar-head">Sunday</th>
+                        <th class="calendar-head">Monday</th>
+                        <th class="calendar-head">Tuesday</th>
+                        <th class="calendar-head">Wednesday</th>
+                        <th class="calendar-head">Thursday</th>
+                        <th class="calendar-head">Friday</th>
+                        <th class="calendar-head">Saturday</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "calendarBody">
+                        <script>
+                            // Embed the bookings data as a JavaScript variable
+                            var bookingsData = {{ bookings | tojson | safe }};
+                            // var userRole = "<%= session.get('role') %>"; 
+                        </script>
+                        {% if session['role'] == 2 %}
+                        <script>
+                            var userRole = 2;
+                        </script>
+                        {% elif session['role'] == 3 %}
+                        <script>
+                            var userRole = 3;
+                        </script>
+                        {% endif %}
+                    </tbody>
+                </table>
+                
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

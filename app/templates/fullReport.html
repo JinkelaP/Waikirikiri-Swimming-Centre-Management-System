@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Full Report{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid pt-3">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.adminDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">View Full Report</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h2 style="text-align: center;">Swimming Pool Classes Full Report</h2>
+    <table class="table table-responsive table-hover table-bordered">
+        <thead class="table-primary">
+            <tr>
+                <th>Class Name</th>
+                <th>Instructor Name</th>
+                <th>Max</th>
+                <th>Session Time</th>
+                <th>Duration</th>
+                <th>Pool ID</th>
+                <th>Status</th>
+                <th>Total Bookings</th>
+                <th>Total Attended</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class in classes %}
+            <tr>
+                <td>{{ class['sessionName'] }}</td>
+                <td>{{ class['instructorName'] }}</td>
+                <td>{{ class['maxParticipants'] }}</td>
+                <td>{{ class['sessionTime'] }}</td>
+                <td>{{ class['lessonDuration'] }} minutes</td>
+                <td>{{ class['poolID'] }}</td>
+                <td>{{ class['sessionStatus'] }}</td>
+                <td>{{ class['totalBookings'] }}</td>
+                <td>{{ class['totalAttended'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

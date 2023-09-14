@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+
+{% block title %}subscription{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container mx-auto">
+        <!-- Breadcrumbs -->
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Extend Subscription</li>
+                </ol>
+            </nav>
+        </div>    
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Order Information</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Subscription start time</h6>
+                            <small class="text-body-secondary"></small>
+                        </div>
+                        <!-- This will display the current date -->
+                        <span class="text-body-secondary">{{ current_date }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Subscription duration</h6>
+                            <small class="text-body-secondary" id="durationText">1 month</small>
+                        </div>
+                        <span class="text-body-secondary"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Subscription end time</h6>
+                            <small class="text-body-secondary"></small>
+                        </div>
+                        <span class="text-body-secondary" id="endTime"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Subscription fee</h6>
+                            <!-- This will display the fee based on the duration -->
+                            <small class="text-body-secondary" id="subscriptionFee">$70</small>
+                        </div>
+                        <span class="text-body-secondary"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (NZD)</span>
+                        <!-- This will also display the total fee -->
+                        <strong id="totalFee">$70</strong>
+                    </li>
+                </ul>
+            </div>    
+
+            <div class="col-md-7 col-lg-8">
+                <h3 class="mb-4">Subscription</h3>
+                <form class="needs-validation" novalidate="" action="{{ url_for('reg.extendSubscription') }}" method="POST">
+                    <label for="subscription_duration" class="form-label">Choose subscription duration</label>
+                    <select class="form-control mb-3" name="subscription_duration" required="" onchange="updateDuration()">
+                        <option value="1" selected>1 Month</option>
+                        <option value="2">2 Months</option>
+                        <option value="3">3 Months</option>
+                        <option value="6">6 Months</option>
+                        <option value="9">9 Months</option>
+                        <option value="12">12 Months</option>
+                        <option value="18">18 Months</option>
+                        <option value="24">24 Months</option>
+                    </select>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3, mt-3">Billing address</h4>
+            
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label">First name</label>
+                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="" value="{{ member_info.firstName }}" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>  
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Last name</label>
+                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="" value="{{ member_info.lastName }}" required="">
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">@</span>
+                                <input type="text" class="form-control" name="userName" id="username" placeholder="Username" value="{{ user.userName }}" required="" readonly>
+                                <div class="invalid-feedback">
+                                    Your username is required.
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com" value="{{ member_info.email }}">
+                            <div class="invalid-feedback">
+                                Please enter a valid email address for shipping updates.
+                            </div>
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" id="address" placeholder="1234 Main St" value="{{ member_info.physicalAddress }}" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    
+                    <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="same-address">
+                    <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
+                    </div>
+        
+                    <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="save-info">
+                    <label class="form-check-label" for="save-info">Save this information for next time</label>
+                    </div>
+        
+                    <hr class="my-4">
+
+                    <h4 class="mb-3">Payment</h4>
+        
+                    <div class="my-3">
+                    <div class="form-check">
+                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
+                        <label class="form-check-label" for="credit">Credit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
+                        <label class="form-check-label" for="debit">Debit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required="">
+                        <label class="form-check-label" for="paypal">PayPal</label>
+                    </div>
+                    </div>
+        
+                    <div class="row gy-3">
+                    <div class="col-md-6">
+                        <label for="cc-name" class="form-label">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="">
+                        <small class="text-body-secondary">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                        Name on card is required
+                        </div>
+                    </div>
+        
+                    <div class="col-md-6">
+                        <label for="cc-number" class="form-label">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="">
+                        <div class="invalid-feedback">
+                        Credit card number is required
+                        </div>
+                    </div>
+        
+                    <div class="col-md-3">
+                        <label for="cc-expiration" class="form-label">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="">
+                        <div class="invalid-feedback">
+                        Expiration date required
+                        </div>
+                    </div>
+        
+                    <div class="col-md-3">
+                        <label for="cc-cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="">
+                        <div class="invalid-feedback">
+                        Security code required
+                        </div>
+                    </div>
+                    </div>
+        
+                    <hr class="my-4">
+                    
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Complete Subscription and Payment</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div> 
+
+
+
+
+ <script>
+function updateDuration() {
+    // Get the value from the select box
+    var duration = parseInt(document.querySelector("[name='subscription_duration']").value);
+    
+    // Calculate the fee
+    var fee = duration * 70;
+
+    // Update the order info
+    var durationText = duration + (duration === 1 ? " month" : " months");
+    document.getElementById("durationText").textContent = durationText;
+    document.getElementById("subscriptionFee").textContent = "$" + fee;
+    document.getElementById("totalFee").textContent = "$" + fee;
+
+    // Calculate the end time
+    var parts = "{{ current_date }}".split('/');
+    var startDate = new Date(parts[2], parts[1] - 1, parts[0]);
+    startDate.setMonth(startDate.getMonth() + duration);
+    var endDate = startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear();
+    document.getElementById("endTime").textContent = endDate;
+}
+
+// This ensures the updateDuration function is called as soon as the page is loaded.
+window.onload = function() {
+    updateDuration();
+};
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscriptions{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid pt-3">
+    <div class="container">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.adminDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">All Subscriptions</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="my-4">All Subscriptions</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Subscription ID</th>
+                <th>User Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subs in subscriptions %}
+            <tr>
+                <td>{{ subs.subscriptionID }}</td>
+                <td>{{ subs.firstName }} {{ subs.lastName }}</td>
+                <td>{{ subs.startDate }}</td>
+                <td>{{ subs.endDate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

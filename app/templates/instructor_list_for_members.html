@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Aqua Aerobics{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="py-1 flash-messages alert alert-danger text-center mb-0" role="alert">
+        {% elif category == 'success'%}
+        <div class="py-1 flash-messages alert alert-success text-center mb-0" role="alert">
+        {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container col-lg-10">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{url_for('adminDashboardFunc.memberDashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Instructors</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row pt-5 mt-3">
+            {% for instructor in instructorList %}
+                <div class="card mx-3 d-flex flex-column align-items-center mb-3 shadow" style="width: 16rem;">                    
+                    <img src="{{ url_for('static', filename='uploadAvatar/' + instructor['userID']|string + '.jpg') }}" alt="mdo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;" class="rounded-circle mt-3" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/avatar.png')}}';">
+                    <div class="card-body d-flex flex-column align-items-center">
+                    <h5 class="card-title">{{instructor['firstName']}} {{instructor['lastName']}}</h5>
+                    <p class="card-text">Specialisation: {{instructor['position']}}</p>
+                    <p class="card-text">Introduction: {{instructor['introduction']}}</p>
+                    <a type="button" class="btn btn-outline-success" href="{{url_for('memberDashboardFunc.individualLessonsTimetable',instructorId = instructor['userID'])}}">Book lessons</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

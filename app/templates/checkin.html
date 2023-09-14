@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid pt-3 bg-body-tertiary">
+    <div class="container col-lg-10">
+        <div>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkin</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4 col-lg-10">
+    <h1 class="display-5 lead text-center">Checkin</h1>
+
+    <!-- Display each news item -->
+    <div class="container my-5 col-md-10 col-sm-10">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="fs-5">Checkin</h1>
+            </div>
+            <form method="POST" action="{{ url_for('adminDashboardFunc.checkin') }}" id="edit-form" class="needs-validation" novalidate>
+                <div class="card-body">
+                    <div class="row g-3">
+    
+                        <div class="col-sm-6">
+                            <label for="userID" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="userID" name="userID"
+                                placeholder="userID" pattern="^[0-9]+$" maxlength="12" required>
+                            <div class="invalid-feedback">
+                                Invalid. Numbers Only.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="using" class="form-label" >Using...</label>
+                            <select class="form-select col-sm-6" name="attendanceType" aria-label="selectTitle"required>
+                                <option value="" selected disabled>Please select</option>
+                                <option value="1">Just pool</option>
+                                <option value="2">Individual class</option>
+                                <option value="3">Aqua aerobics class</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Invalid.
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Check in!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
