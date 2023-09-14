@@ -162,5 +162,4 @@ cython_debug/
 .vscode
 
 dockerOpenBash
-app/__init__.py
-app/__init__.py
+
